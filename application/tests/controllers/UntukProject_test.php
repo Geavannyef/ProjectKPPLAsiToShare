@@ -54,14 +54,14 @@ class UntukProject_test extends TestCase
     
     public function test_createproject_tanpafoto(){
             $_SESSION['username'] = 'cncnrezi';
-            $totalrow= $this->obj1->getTotalRow('anu','penawaran','anuanudeh','22','2017-02-02');
+            $totalrow= $this->obj1->getTotalRow('anu','penawaran','anuanudeh','22','2017-02-02', NULL);
             $output = $this->request('POST', 'BuatProject/addFotoDulu', 
                                        ['nama_project'=>'anu', 
                                         'tipe_project' => 'penawaran',
                                         'deskripsi_project'=>'anuanudeh',
                                         'jumlah_botol'=>'22',
                                         'tanggal_akhir'=>'2017-02-02']);
-            $totalrowafter= $this->obj1->getTotalRow('anu','penawaran','anuanudeh','22','2017-02-02');
+            $totalrowafter= $this->obj1->getTotalRow('anu','penawaran','anuanudeh','22','2017-02-02', NULL);
             $this->assertEquals($totalrowafter,$totalrow+1);
             $this->obj1->deleteRow('anu','penawaran','anuanudeh','22','2017-02-02');
     }
@@ -79,14 +79,14 @@ class UntukProject_test extends TestCase
 		];
 	
             $this->request->setFiles($files);
-            $totalrow= $this->obj1->getTotalRow('anutesting','penawaran','anuanudeh','22','2017-02-02');
+            $totalrow= $this->obj1->getTotalRow('anutesting','penawaran','anuanudeh','22','2017-02-02', NULL);
             $this->request('POST', 'BuatProject/addFotoDulu', 
                                        ['nama_project'=>'anutesting', 
                                         'tipe_project' => 'penawaran',
                                         'deskripsi_project'=>'anuanudeh',
                                         'jumlah_botol'=>'22',
                                         'tanggal_akhir'=>'2017-02-02']);
-            $totalrowafter= $this->obj1->getTotalRow('anutesting','penawaran','anuanudeh','22','2017-02-02');
+            $totalrowafter= $this->obj1->getTotalRow('anutesting','penawaran','anuanudeh','22','2017-02-02', NULL);
             $this->assertEquals($totalrowafter,$totalrow+1);
             
     }
