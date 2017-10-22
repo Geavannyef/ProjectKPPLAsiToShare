@@ -69,8 +69,6 @@ class Login extends CI_Controller {
 	{
 		$username = $this->input->post('username');
 		$password = $this->input->post('pass');
-		$data = $this->LoginModel->getData($username, $password);
-		
 		$isLogin = $this->LoginModel->login_authen($username, $password);
 		$iyalogin = $isLogin->result_array();
 
