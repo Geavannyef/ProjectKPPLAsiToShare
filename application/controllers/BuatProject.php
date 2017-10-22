@@ -3,6 +3,7 @@
 
 class BuatProject extends CI_Controller
 {
+	//INI DIEDIT SAMA CINCIN BUAT NGECEK
 	public function index(){
 		
 		if ($this->session->userdata('role') == "pendonor") {
