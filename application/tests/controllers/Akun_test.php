@@ -8,6 +8,7 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
+/* nyoba fira*/
 class Akun_test extends TestCase 
 {
     protected $backupGlobalsBlacklist = array( '_SESSION' );
