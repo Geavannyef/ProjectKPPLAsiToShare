@@ -33,7 +33,6 @@
 <![endif]-->
 
     <!-- Favicon and apple touch icons-->
-    <link rel="shortcut icon" href="<?php echo base_url(); ?>/asset/img/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>/asset/img/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="57x57" href="<?php echo base_url(); ?>/asset/img/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="<?php echo base_url(); ?>/asset/img/apple-touch-icon-72x72.png" />
