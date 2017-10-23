@@ -9,8 +9,8 @@
                 <div class="navbar-header">
 
                     <a class="navbar-brand home" href="<?php echo base_url('Timeline')?>">
-                        <img src="<?php echo base_url(); ?>asset/img/logo.png" class="hidden-xs hidden-sm">
-                        <img src="<?php echo base_url(); ?>asset/img/logo-small.png" class="visible-xs visible-sm"><span class="sr-only">ASI to Share</span>
+                        <img src="<?php echo base_url(); ?>asset/img/lg.png" class="hidden-xs hidden-sm">
+                        <img src="<?php echo base_url(); ?>asset/img/lgs.png" class="visible-xs visible-sm"><span class="sr-only">ASI to Share</span>
                     </a>
                     <div class="navbar-buttons">
                         <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
