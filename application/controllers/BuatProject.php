@@ -3,7 +3,6 @@
 
 class BuatProject extends CI_Controller
 {
-	//INI DIEDIT SAMA CINCIN BUAT NGECEK
 	public function index(){
 		
 		if ($this->session->userdata('role') == "pendonor") {
@@ -53,6 +52,32 @@ class BuatProject extends CI_Controller
                 }
 	}
 
+public function aksiPenawaran(){
+		$this->form_validation->set_rules('nama_project','Judul Penawaran','required');
+		$this->form_validation->set_rules('deskripsi_projct','Deskripsi Penawaran','required|max_length[100]');
+        $this->form_validation->set_rules('jumlah_botol','Banyak Botol yg Ditawarkan','required|numeric');
+		$this->form_validation->set_rules('tanggal_akhir','Tanggal Kadaluarsa','required');
+                  
+ 		if($this->form_validation->run() != false){
+			$this->addFotoDulu();
+		}else{
+                        $this->load->view('error_membuatPenawaran', array('errornya'=>validation_errors()));
+		}
+	}
+
+public function aksiPermintaan(){
+		$this->form_validation->set_rules('nama_project','Judul Permintaan','required');
+		$this->form_validation->set_rules('deskripsi_projct','Deskripsi Permintaan','required|max_length[100]');
+        $this->form_validation->set_rules('jumlah_botol','Banyak Botol Yang Dibutuhkan','required|numeric');
+        $this->form_validation->set_rules('tanggal_akhir','Tanggal Maksimal Butuh','required');
+                  
+ 		if($this->form_validation->run() != false){
+			$this->addFotoDulu();
+		}else{
+                        $this->load->view('error_membuatPermintaan', array('errornya'=>validation_errors()));
+		}
+	}
+
 	public function tambahProject()
 	{
                 $anaknya = $this->input->post('untuk_anak');
@@ -80,7 +105,7 @@ class BuatProject extends CI_Controller
 			'tipe_project' => $this->input->post('tipe_project', true),
 			'deskripsi_project' => $this->input->post('deskripsi_project', true),
 			'jumlah_susu' => $this->input->post('jumlah_botol', true),
-                        'untuk_anak'=> $anaknya,
+            'untuk_anak'=> $anaknya,
 			'foto_project' => $foto,
 			'tanggal_akhir' => date("Y-m-d", strtotime($this->input->post('tanggal_akhir', true))),
 			'tanggal_buat' => date("Y-m-d")
