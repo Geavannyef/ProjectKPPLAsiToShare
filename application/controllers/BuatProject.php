@@ -54,7 +54,7 @@ class BuatProject extends CI_Controller
 
 public function aksiPenawaran(){
 		$this->form_validation->set_rules('nama_project','Judul Penawaran','required');
-		$this->form_validation->set_rules('deskripsi_projct','Deskripsi Penawaran','required|max_length[100]');
+		$this->form_validation->set_rules('deskripsi_project','Deskripsi Penawaran','required|max_length[100]');
         $this->form_validation->set_rules('jumlah_botol','Banyak Botol yg Ditawarkan','required|numeric');
 		$this->form_validation->set_rules('tanggal_akhir','Tanggal Kadaluarsa','required');
                   
@@ -67,7 +67,7 @@ public function aksiPenawaran(){
 
 public function aksiPermintaan(){
 		$this->form_validation->set_rules('nama_project','Judul Permintaan','required');
-		$this->form_validation->set_rules('deskripsi_projct','Deskripsi Permintaan','required|max_length[100]');
+		$this->form_validation->set_rules('deskripsi_project','Deskripsi Permintaan','required|max_length[100]');
         $this->form_validation->set_rules('jumlah_botol','Banyak Botol Yang Dibutuhkan','required|numeric');
         $this->form_validation->set_rules('tanggal_akhir','Tanggal Maksimal Butuh','required');
                   
