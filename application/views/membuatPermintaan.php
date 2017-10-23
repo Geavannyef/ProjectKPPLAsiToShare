@@ -9,8 +9,8 @@
                 <div class="navbar-header">
 
                     <a class="navbar-brand home" href="<?php echo base_url('Timeline')?>">
-                        <img src="<?php echo base_url(); ?>asset/img/lg.png" class="hidden-xs hidden-sm">
-                        <img src="<?php echo base_url(); ?>asset/img/lgs.png" class="visible-xs visible-sm"><span class="sr-only">ASI to Share</span>
+                        <img src="<?php echo base_url(); ?>asset/img/logo.png" class="hidden-xs hidden-sm">
+                        <img src="<?php echo base_url(); ?>asset/img/logo-small.png" class="visible-xs visible-sm"><span class="sr-only">ASI to Share</span>
                     </a>
                     <div class="navbar-buttons">
                         <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
@@ -91,7 +91,7 @@
                             <h2 class="text-uppercase">Membuat Permintaan</h2>
                             <hr>
 
-                           <?php echo form_open_multipart('BuatProject/addFotoDulu'); ?>
+                           <?php echo form_open_multipart('BuatProject/aksiPermintaan'); ?>
                                 <div class="form-group">
                                     <label for="judul">Judul Permintaan</label>
                                     <input type="text" class="form-control" id="name-login" name="nama_project">
@@ -110,7 +110,7 @@
                                 </div>
                                  <div class="form-group">
                                                 <label for="foranak">Untuk Anak</label><br>
-                                                <select name="untuk_anak">
+                                                <select name="untuk_anak" required="true">
                                                     <option value="">Silahkan Pilih</option>
                                                     <?php foreach ($anaknya as $anak){?>
                                                     <option value="<?php echo $anak['id_anak'];?>"><?php echo $anak['nama'];?></option>
@@ -121,7 +121,6 @@
                                     <label for="foto">Foto Permintaan</label>
                                     <input type="file" class="form-control" id="foto_project" name="foto_project">
                                 </div>
-                                    <input type="text" value="permintaan" name="tipe_project" hidden>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-template-main"><i class="fa fa-user-md"></i> Create</button>
                                 </div>
