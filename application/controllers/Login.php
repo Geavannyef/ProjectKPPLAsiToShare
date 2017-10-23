@@ -34,21 +34,22 @@ class Login extends CI_Controller {
                 }
         }
         
-    /*    function aksi(){
-		$this->form_validation->set_rules('username','Username','required');
-		$this->form_validation->set_rules('password','Password','required');
-                $this->form_validation->set_rules('no_hp','Nomer Hp','required');
-		$this->form_validation->set_rules('no_ktp','Nomer KTP','required');
-                $this->form_validation->set_rules('foto_ktp','Upload KTP','required');
+   function aksi(){
+		$this->form_validation->set_rules('username','Username','required|max_length[10]|is_unique[akun.username]',
+                                                array('is_unique'=>'Try another username!'));
+		$this->form_validation->set_rules('password','Password','required|max_length[20]|min_length[8]');
+                $this->form_validation->set_rules('no_hp','Nomer Hp','required|numeric|max_length][12]|min_length[8]');
+		$this->form_validation->set_rules('no_ktp','Nomer KTP','required|numeric');
                 $this->form_validation->set_rules('role','Berperan Sebagai','required');
+               
                   
  
 		if($this->form_validation->run() != false){
-			echo "Form validation oke";
+			$this->uploadKtp();
 		}else{
-			$this->load->view('login_body');
+                        $this->load->view('error_register', array('errornya'=>validation_errors()));
 		}
-	}*/
+	}
         
 	function register(){
 		$data = array(
