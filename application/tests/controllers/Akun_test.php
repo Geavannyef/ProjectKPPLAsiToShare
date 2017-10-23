@@ -150,8 +150,35 @@ class Akun_test extends TestCase
 		$this->assertContains('Silahkan masukkan foto ktp terlebih dahulu', $output);
     }
     
+	public function test_register_gagaluploadktp(){
+        $filename = 'teach.gif';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/gif',
+				'tmp_name' => $filepath
+			],
+		];
+                $totalrow= $this->obj1->getTotalRowAcc('testing','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219','2');
+		$output= $this->request('POST', 'Login/uploadKtp',
+                                        [
+                                            'username' => 'testing',
+                                            'password' => 'anueheehe',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '081219',
+                                            'role' => '2' 
+                                            ]);
+                $this->request->setFiles($files);
+                $totalrowafter= $this->obj1->getTotalRowAcc('testing','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Masukkan foto KTP sesuai dengan format yang diperbolehkan!',$output);
+    }
     
-    public function test_register(){
+    public function test_register_normal(){
         $filename = '1.jpg';
 	$filepath = APPPATH.  'fototest/' .$filename;
 	$files = [
@@ -165,21 +192,22 @@ class Akun_test extends TestCase
 			],
 		];
 		$this->request->setFiles($files);
-                $totalrow= $this->obj1->getTotalRowAcc('testing','anuehe','akun testing','jl jalan','testing@testing.com','asasas','081219','2');
-		$this->request('POST', 'Login/uploadKtp',
+                $totalrow= $this->obj1->getTotalRowAcc('testing','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219','2');
+		$output =$this->request('POST', 'Login/aksi',
                                         [
                                             'username' => 'testing',
-                                            'password' => 'anuehe',
+                                            'password' => 'anueheehe',
                                             'nama' => 'akun testing',
                                             'alamat' => 'jl jalan',
                                             'email' => 'testing@testing.com',
-                                            'no_ktp' => 'asasas',
+                                            'no_ktp' => '089198',
                                             'no_hp' => '081219',
                                             'role' => '2' 
                                             ]);
-                $totalrowafter= $this->obj1->getTotalRowAcc('testing','anuehe','akun testing','jl jalan','testing@testing.com','asasas','081219','2');
+                $this->assertRedirect('Home/index');
+                $totalrowafter= $this->obj1->getTotalRowAcc('testing','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219','2');
                 $this->assertEquals($totalrowafter,$totalrow+1);
-                
+               
     }
     
    
