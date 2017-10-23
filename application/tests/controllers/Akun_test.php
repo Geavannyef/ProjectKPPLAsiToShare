@@ -31,10 +31,6 @@ class Akun_test extends TestCase
         $output = $this->request('GET', 'Login/login');
         $this->assertContains('username dan password salah', $output);
     }
-    
-    
-
-
         public function test_user_normal_penerima()
     {
        $this->request('POST', 'Login/login',
@@ -209,6 +205,175 @@ class Akun_test extends TestCase
                 $this->assertEquals($totalrowafter,$totalrow+1);
                
     }
+	
+	public function test_register_usernamesudahada() {
+        $filename = '1.jpg';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+		$this->request->setFiles($files);
+                $totalrow= $this->obj1->getTotalRowAcc('cncnrezi','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+		$output= $this->request('POST', 'Login/aksi',
+                                        [
+                                            'username' => 'cncnrezi',
+                                            'password' => 'anueheehe',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '081219123',
+                                            'role' => '2' 
+                                            ]);
+                $totalrowafter= $this->obj1->getTotalRowAcc('cncnrezi','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Try another username!', $output);
+    }
+    
+    public function test_register_usernamelebihmax(){
+        $filename = '1.jpg';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+		$this->request->setFiles($files);
+                $totalrow= $this->obj1->getTotalRowAcc('cncnreziajaja','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+		$output= $this->request('POST', 'Login/aksi',
+                                        [
+                                            'username' => 'cncnreziajaja',
+                                            'password' => 'anueheehe',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '081219123',
+                                            'role' => '2' 
+                                            ]);
+                $totalrowafter= $this->obj1->getTotalRowAcc('cncnreziajaja','anueheehe','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Errornya:', $output);
+    }
+    
+    public function test_register_passwordlebihmax(){
+        $filename = '1.jpg';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+		$this->request->setFiles($files);
+                $totalrow= $this->obj1->getTotalRowAcc('testing2','anueheeheanueheeheanueheehe','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+		$output= $this->request('POST', 'Login/aksi',
+                                        [
+                                            'username' => 'testing2',
+                                            'password' => 'anueheeheanueheeheanueheehe',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '081219123',
+                                            'role' => '2' 
+                                            ]);
+                $totalrowafter= $this->obj1->getTotalRowAcc('testing2','anueheeheanueheeheanueheehe','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Errornya:', $output);       
+    }
+    
+     public function test_register_passwordkurangmin(){
+        $filename = '1.jpg';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+		$this->request->setFiles($files);
+                $totalrow= $this->obj1->getTotalRowAcc('testing2','anueh','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+		$output= $this->request('POST', 'Login/aksi',
+                                        [
+                                            'username' => 'testing2',
+                                            'password' => 'anueh',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '081219123',
+                                            'role' => '2' 
+                                            ]);
+                $totalrowafter= $this->obj1->getTotalRowAcc('testing2','anueh','akun testing','jl jalan','testing@testing.com','089198','081219123','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Errornya:', $output);       
+    }
+    
+    public function test_register_usernomorkurang(){
+        $filename = '1.jpg';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+		$this->request->setFiles($files);
+                $totalrow= $this->obj1->getTotalRowAcc('cncnrezi','anueheehe','akun testing','jl jalan','testing@testing.com','089198','0812','2');
+		$output= $this->request('POST', 'Login/aksi',
+                                        [
+                                            'username' => 'cncnreziajaja',
+                                            'password' => 'anueheehe',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '0812',
+                                            'role' => '2' 
+                                            ]);
+                $totalrowafter= $this->obj1->getTotalRowAcc('cncnrezi','anueheehe','akun testing','jl jalan','testing@testing.com','089198','0812','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Errornya:', $output);
+    }
+    
+    public function test_register_usernomorlebih(){
+        $filename = '1.jpg';
+	$filepath = APPPATH.  'fototest/' .$filename;
+	$files = [
+			'foto_ktp' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+		$this->request->setFiles($files);
+                $totalrow= $this->obj1->getTotalRowAcc('cncnrezi','anueheehe','akun testing','jl jalan','testing@testing.com','089198','08128837729927309200289','2');
+		$output= $this->request('POST', 'Login/aksi',
+                                        [
+                                            'username' => 'cncnreziajaja',
+                                            'password' => 'anueheehe',
+                                            'nama' => 'akun testing',
+                                            'alamat' => 'jl jalan',
+                                            'email' => 'testing@testing.com',
+                                            'no_ktp' => '089198',
+                                            'no_hp' => '08128837729927309200289',
+                                            'role' => '2' 
+                                            ]);
+                $totalrowafter= $this->obj1->getTotalRowAcc('cncnrezi','anueheehe','akun testing','jl jalan','testing@testing.com','089198','08128837729927309200289','2');
+                $this->assertEquals($totalrowafter,$totalrow);
+                $this->assertContains('Errornya:', $output);
+    }
+    
     
    
 
