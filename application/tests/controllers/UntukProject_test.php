@@ -17,6 +17,8 @@ class UntukProject_test extends TestCase
             $this->resetInstance();
             $this->CI->load->model('BuatProjectModel');
             $this->obj1 = $this->CI->BuatProjectModel;
+            $this->CI->load->model('AnakModel');
+            $this->obj2 = $this->CI->AnakModel;
     }
     
      public function test_index(){
@@ -39,35 +41,40 @@ class UntukProject_test extends TestCase
     public function test_createpermintaan_tanpafoto(){
             $_SESSION['username'] = 'reziadinda';
             $_SESSION['role'] = 'penerima';
-            $totalrow= $this->obj1->getTotalRow('anupenerima','permintaan','anuanudeh','22','2017-02-02','1anakreziadinda');
-            $this->request('POST', 'BuatProject/addFotoDulu', 
-                                       ['nama_project'=>'anupenerima', 
-                                        'tipe_project' => 'permintaan',
+            $totalrow= $this->obj1->getTotalRow('permintaan tanpa foto','permintaan','anuanudeh','4','2017-02-02','1anakreziadinda');
+            $this->request('POST', 'BuatProject/aksiPermintaan', 
+                                       ['nama_project'=>'permintaan tanpa foto', 
                                         'deskripsi_project'=>'anuanudeh',
-                                        'jumlah_botol'=>'22',
+                                        'jumlah_botol'=>'4',
                                         'tanggal_akhir'=>'2017-02-02',
                                         'untuk_anak'=>'1anakreziadinda']);
-            $totalrowafter= $this->obj1->getTotalRow('anupenerima','permintaan','anuanudeh','22','2017-02-02','1anakreziadinda');
+            $totalrowafter= $this->obj1->getTotalRow('permintaan tanpa foto','permintaan','anuanudeh','4','2017-02-02','1anakreziadinda');
             $this->assertEquals($totalrowafter,$totalrow+1);
-            //$this->obj1->deleteRow('anu','penawaran','anuanudeh','22','2017-02-02');
+            $expected = $this->obj2->getAnakById('1anakreziadinda')[0]['foto_anak'];
+            $actual = $this->obj1->getDistinctRow('permintaan tanpa foto','permintaan','anuanudeh','4','2017-02-02','1anakreziadinda')[0]['foto_project'];
+            $this->assertEquals($expected,$actual);
+            $this->obj1->deleteRow('permintaan tanpa foto','permintaan','anuanudeh','4','2017-02-02','1anakreziadinda');
     }
-    
-    public function test_createproject_tanpafoto(){
+   
+    public function test_createpenawaran_tanpafoto(){
             $_SESSION['username'] = 'cncnrezi';
-            $totalrow= $this->obj1->getTotalRow('anu','penawaran','anuanudeh','22','2017-02-02', NULL);
-            $output = $this->request('POST', 'BuatProject/addFotoDulu', 
-                                       ['nama_project'=>'anu', 
-                                        'tipe_project' => 'penawaran',
+            $_SESSION['role'] = 'pendonor';
+            $totalrow= $this->obj1->getTotalRow('penawaran tanpafoto','penawaran','anuanudeh','22','2017-02-02', NULL);
+            $this->request('POST', 'BuatProject/aksiPenawaran', 
+                                       ['nama_project'=>'penawaran tanpafoto', 
                                         'deskripsi_project'=>'anuanudeh',
                                         'jumlah_botol'=>'22',
                                         'tanggal_akhir'=>'2017-02-02']);
-            $totalrowafter= $this->obj1->getTotalRow('anu','penawaran','anuanudeh','22','2017-02-02', NULL);
+            $totalrowafter= $this->obj1->getTotalRow('penawaran tanpafoto','penawaran','anuanudeh','22','2017-02-02', NULL);
             $this->assertEquals($totalrowafter,$totalrow+1);
-            $this->obj1->deleteRow('anu','penawaran','anuanudeh','22','2017-02-02');
+            $foto_project = $this->obj1->getDistinctRow('penawaran tanpafoto','penawaran','anuanudeh','22','2017-02-02', NULL)[0]['foto_project'];
+            $this->assertEquals('default.jpg', $foto_project);
+            $this->obj1->deleteRow('penawaran tanpafoto','penawaran','anuanudeh','22','2017-02-02', NULL);
     }
     
     public function test_createproject_withfoto(){
             $_SESSION['username'] = 'cncnrezi';
+            $_SESSION['role'] = 'pendonor';
             $filename = '1.jpg';
             $filepath = APPPATH. 'fototest/' .$filename;
             $files = [
@@ -79,19 +86,117 @@ class UntukProject_test extends TestCase
 		];
 	
             $this->request->setFiles($files);
-            $totalrow= $this->obj1->getTotalRow('anutesting','penawaran','anuanudeh','22','2017-02-02', NULL);
-            $this->request('POST', 'BuatProject/addFotoDulu', 
-                                       ['nama_project'=>'anutesting', 
-                                        'tipe_project' => 'penawaran',
+            $totalrow= $this->obj1->getTotalRow('penawaran dengan foto','penawaran','anuanudeh','22','2017-02-02', NULL);
+            $this->request('POST', 'BuatProject/aksiPenawaran', 
+                                       ['nama_project'=>'penawaran dengan foto', 
                                         'deskripsi_project'=>'anuanudeh',
                                         'jumlah_botol'=>'22',
                                         'tanggal_akhir'=>'2017-02-02']);
-            $totalrowafter= $this->obj1->getTotalRow('anutesting','penawaran','anuanudeh','22','2017-02-02', NULL);
+            $totalrowafter= $this->obj1->getTotalRow('penawaran dengan foto','penawaran','anuanudeh','22','2017-02-02', NULL);
             $this->assertEquals($totalrowafter,$totalrow+1);
+            $this->obj1->deleteRow('penawaran dengan foto','penawaran','anuanudeh','22','2017-02-02', NULL);
             
     }
     
+    public function test_createpenawaran_judulkosong(){
+            $_SESSION['username'] = 'cncnrezi';
+            $_SESSION['role'] = 'pendonor';
+            $filename = '1.jpg';
+            $filepath = APPPATH. 'fototest/' .$filename;
+            $files = [
+			'foto_project' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+	
+            $this->request->setFiles($files);
+            $totalrow= $this->obj1->getTotalRow('','penawaran','anuanudeh','22','2017-02-02');
+            $this->request('POST', 'BuatProject/aksiPenawaran', 
+                                       ['nama_project'=>'', 
+                                        'deskripsi_project'=>'anuanudeh',
+                                        'jumlah_botol'=>'22',
+                                        'tanggal_akhir'=>'2017-02-02']);
+            $totalrowafter= $this->obj1->getTotalRow('','penawaran','anuanudeh','22','2017-02-02');
+            $this->assertEquals($totalrowafter,$totalrow);
+            
+    }
     
+    public function test_createpermintaan_deskripsikosong(){
+            $_SESSION['username'] = 'reziadinda';
+            $_SESSION['role'] = 'penerima';
+            $filename = '1.jpg';
+            $filepath = APPPATH. 'fototest/' .$filename;
+            $files = [
+			'foto_project' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+	
+            $this->request->setFiles($files);
+            $totalrow= $this->obj1->getTotalRow('mintasusu','permintaan','','22','2017-02-02');
+            $this->request('POST', 'BuatProject/aksiPermintaan', 
+                                       ['nama_project'=>'mintasusu', 
+                                        'deskripsi_project'=>'',
+                                        'jumlah_botol'=>'22',
+                                        'tanggal_akhir'=>'2017-02-02']);
+            $totalrowafter= $this->obj1->getTotalRow('mintasusu','permintaan','','22','2017-02-02');
+            $this->assertEquals($totalrowafter,$totalrow);     
+    }
+
+    public function test_createpermintaan_dekripsilebihmax(){
+            $_SESSION['username'] = 'reziadinda';
+            $_SESSION['role'] = 'penerima';
+            $filename = '1.jpg';
+            $filepath = APPPATH. 'fototest/' .$filename;
+            $files = [
+			'foto_project' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+	
+            $this->request->setFiles($files);
+            $totalrow= $this->obj1->getTotalRow('mintasusu','permintaan','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','22','2017-02-02');
+            $this->request('POST', 'BuatProject/aksiPermintaan', 
+                                       ['nama_project'=>'mintasusu', 
+                                        'deskripsi_project'=>'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                                        'jumlah_botol'=>'22',
+                                        'tanggal_akhir'=>'2017-02-02']);
+            $totalrowafter= $this->obj1->getTotalRow('mintasusu','permintaan','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','22','2017-02-02');
+            $this->assertEquals($totalrowafter,$totalrow);
+        
+            
+    }
+    
+       public function test_createpermintaan_botolbukanangka(){
+            $_SESSION['username'] = 'reziadinda';
+            $_SESSION['role'] = 'penerima';
+            $filename = '1.jpg';
+            $filepath = APPPATH. 'fototest/' .$filename;
+            $files = [
+			'foto_project' => [
+				'name'     => $filename,
+				'type'     => 'image/jpg',
+				'tmp_name' => $filepath,
+			],
+		];
+	
+            $this->request->setFiles($files);
+            $totalrow= $this->obj1->getTotalRow('mintasusu','permintaan','anu','2b','2017-02-02');
+            $this->request('POST', 'BuatProject/aksiPermintaan', 
+                                       ['nama_project'=>'mintasusu', 
+                                        'deskripsi_project'=>'anu',
+                                        'jumlah_botol'=>'2b',
+                                        'tanggal_akhir'=>'2017-02-02']);
+            $totalrowafter= $this->obj1->getTotalRow('mintasusu','permintaan','anu','2b','2017-02-02');
+            $this->assertEquals($totalrowafter,$totalrow);     
+    }
+
 }
 
 

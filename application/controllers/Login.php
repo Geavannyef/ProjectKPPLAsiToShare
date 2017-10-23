@@ -22,11 +22,11 @@ class Login extends CI_Controller {
                 $config['max_size']             = 10000000;
                 $config['max_width']            = 10000000;
                 $config['max_height']           = 100000000;
-                $config['overwrite']			= TRUE;
+                $config['overwrite']		= TRUE;
                 $this->load->library('upload', $config);
                 if ( ! $this->upload->do_upload('foto_ktp'))
                 {
-                    echo 'Silahkan masukkan foto ktp terlebih dahulu';
+                    $this->load->view('error_register', array('errornya'=>'Masukkan foto KTP sesuai dengan format yang diperbolehkan!'));
                 }
                 else
                 {
@@ -38,7 +38,7 @@ class Login extends CI_Controller {
 		$this->form_validation->set_rules('username','Username','required|max_length[10]|is_unique[akun.username]',
                                                 array('is_unique'=>'Try another username!'));
 		$this->form_validation->set_rules('password','Password','required|max_length[20]|min_length[8]');
-                $this->form_validation->set_rules('no_hp','Nomer Hp','required|numeric|max_length][12]|min_length[8]');
+                $this->form_validation->set_rules('no_hp','Nomer Hp','required|numeric|max_length[13]|min_length[8]');
 		$this->form_validation->set_rules('no_ktp','Nomer KTP','required|numeric');
                 $this->form_validation->set_rules('role','Berperan Sebagai','required');
                
@@ -52,6 +52,7 @@ class Login extends CI_Controller {
 	}
         
 	function register(){
+               
 		$data = array(
 			'username' => $this->input->post('username'),
 			'password' => $this->input->post('password'),
@@ -64,12 +65,13 @@ class Login extends CI_Controller {
 			'foto_ktp' => $this->upload->data()['file_name']
 		);
 		$this->LoginModel->addAcc($data);
-                redirect(base_url('Home'));   }
+                redirect(base_url('Home'));}   
 	
 	function login()
 	{
 		$username = $this->input->post('username');
 		$password = $this->input->post('pass');
+		
 		$isLogin = $this->LoginModel->login_authen($username, $password);
 		$iyalogin = $isLogin->result_array();
 
